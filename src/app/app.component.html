@@ -1,0 +1,123 @@
+<!--BEGIN LICENSE BLOCK--> 
+<!--Interneuron Terminus
+
+Copyright(C) 2021  Interneuron CIC
+
+This program is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+
+See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with this program.If not, see<http://www.gnu.org/licenses/>. -->
+<!--END LICENSE BLOCK--> 
+
+
+<div [hidden]="!hasEncounters" style="padding-left:10px">
+  <!--<select (change) ="passpid($event.target.value)" class="form-control" id="txtconsciousLevel">
+    <option value="027c3400-24cd-45c1-9e3d-0f4475336394">A</option>
+    <option value="04846d29-9723-4c02-b306-979da769b755">C</option>
+    <option value="0775362b-9d93-4c18-9e03-357c10d226f7">V</option>
+    <option value="17775da9-8e71-4a3f-9042-4cdcbf97efec">P</option>
+    <option value="1fa24c95-dc5c-4e33-be86-51ac7d3a1cfb">U</option>
+
+
+  </select>-->
+  <app-news-guidlines></app-news-guidlines>
+
+  <button type="button" style="display:none" data-toggle="modal" data-target="#obsModal" #openObsForm></button>
+
+  <div class="btn-group ml-1 mt-1">
+    <app-encounter-navigation (loadComplete)="encounterLoadComplete()" (clicked)="removeXaxisCss()"
+                              (encountersLoaded)="encountersListLoaded($event)"></app-encounter-navigation>
+  </div>
+  <div class="btn-group ml-1 mt-1" [hidden]="!appService.isNewsScale(appService.currentEWSScale)">
+    <app-person-scaletype *ngIf="appService.authoriseAction('change scale')" (click)="removeXaxisCss()"></app-person-scaletype>
+  </div>
+  <div class="btn-group  ml-1 mt-1" *ngIf="isCurrentEncounter">
+    <button type="button" *ngIf="appService.authoriseAction('add observations')" [hidden]="!obsLoaded" class="btn btn-success" data-toggle="modal" data-target="#obsModal" data-backdrop="static" data-keyboard="false" (click)="openObsModal()">
+      Add Observations
+    </button>
+  </div>
+  <div class="btn-group ml-1 mt-1" *ngIf="isCurrentEncounter">
+    <div *ngIf="isDue()" class="text-danger font-weight-bold"> {{appService.appConfig.appsettings.obs_due_warning}}</div>
+    <div *ngIf="!isDue() && appService.nextObsDueTime " class="btn alert-info font-weight-bold">Due: {{ appService.nextObsDueTime | date:'MMM d' }}, {{ appService.nextObsDueTime | date:'shortTime' }}</div>
+  </div>
+  <div class="ml-1 mt-1" *ngIf="!isCurrentEncounter">
+    <div class="badge badge-info text-left text-wrap">
+      Unable to add / edit observation for previous encounter
+    </div>
+  </div>
+  <div class="row mt-2">
+    <div class="col">
+      <div *ngFor="let alert of alerts">
+        <alert [type]="alert.type" [dismissible]="true" [dismissOnTimeout]="alert.timeout"> <span [innerHtml]="alert.msg"></span></alert>
+      </div>
+    </div>
+  </div>
+  <div>
+    <app-observation-chart></app-observation-chart>
+  </div>
+  <!--<ng-template #observations>
+    <div class="modal-header">
+      <h4 class="modal-title pull-left">New Observation</h4>
+      <button type="button" class="close pull-right" aria-label="Close" (click)="modalRef.hide()">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body">
+      <app-new-observation></app-new-observation>
+    </div>
+  </ng-template>-->
+
+
+  <div [ngClass]="blurObsModal?'modal enableBlur':'modal'" id="obsModal" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog  modal-dialog-centered modal-lg" role="document">
+      <div class="modal-content">
+        <div class="modal-header" style="padding-top:10px;padding-bottom:2px;">
+          <h5 id="modalLabel">{{observationsFormHeader}}</h5>
+          <button type="button" class="close" aria-label="Close" (click)="openConfirmModal(confirmModaltemplate)">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body" style="padding:5px 5px 5px 5px">
+          <app-new-observation (loadComplete)="obsLoadComplete()" (updateFrameworkEvents)="obsUpdateFrameworkEvents($event)"></app-new-observation>
+        </div>
+        <div class="modal-footer" style="padding-top:5px;padding-bottom:5px;">
+          <button type="button" style="display:none" class="btn btn-secondary" data-dismiss="modal" #closObsForm>close</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <app-information-popup></app-information-popup>
+  <app-delete-observationevent></app-delete-observationevent>
+</div>
+<div *ngIf="showSepsisModule">
+  <div [appAssessmentLoaderComponent]="componentModuleData" (sepsisModuleUnLoad)="onSepsisModuleUnLoad($event)"></div>
+</div>
+<div [hidden]="hasEncounters">
+  <div [hidden]="!showNoEncounterMsg">This patient does not have any inpatient admissions. </div>
+  <div [hidden]="showNoEncounterMsg">Please wait... </div>
+</div>
+
+<div>
+  <ng-template #confirmModaltemplate>
+    <div class="modal-body">
+      <h5>
+        Are you sure you want to close this form?
+      </h5>
+      <span class="font-weight-light">All unsaved data entered will be lost if you continue.</span>
+    </div>
+    <div class="modal-footer">
+      <button type="button" class="btn btn-primary" (click)="confirm()">Yes</button>
+      <button type="button" class="btn btn-danger" (click)="decline()">No</button>
+    </div>
+  </ng-template>
+</div>

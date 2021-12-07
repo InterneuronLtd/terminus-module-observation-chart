@@ -1,0 +1,335 @@
+
+#moduleWrapper {
+  width: 100%;
+  margin: 0 auto;
+}
+
+/* #observationChartWrapper{
+  max-width: 100%;
+} */
+
+#chartHolder {
+  border: none !important;
+  width: 100%;
+  height: 100%;
+  background-color: white;
+}
+
+.xAxisHeader {
+  /* position: sticky;
+  top: 0px;
+  z-index: 2000; */
+  background-color: white;
+}
+
+
+.tooltip {
+  position: absolute;
+  text-align: center;
+  background: whitesmoke;
+  border: 1%;
+  border-radius: 10%;
+  padding: 1%;
+}
+
+  .tooltip:after {
+    position: absolute;
+    height: 100%;
+    width: 50%;
+    content: '';
+    background: inherit;
+    top: 0%;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    border-radius: 0%;
+    transform-origin: bottom left;
+    transform: translate(0%, -5%) rotate(40deg);
+    z-index: -1;
+  }
+/* .tooltip:after {	
+  position: absolute;			
+  text-align: center;			
+  border: 10px;		
+  border-radius: 3px;
+  padding: 4px;	
+  	
+  background: red;
+ 
+} */
+
+svg {
+  height: 100%; /* fix webkit */
+  overflow: hidden; /* fix IE */
+}
+
+rect.dateTimeBackground {
+  fill: #FFFFFF;
+}
+
+path.dataPoint {
+  fill: black;
+  stroke: transparent;
+  stroke-width: 0.5vw;
+  z-index: 2000;
+}
+
+  path.dataPoint.diastolicbloodpressure {
+    fill: rgb(60, 60, 75);
+    stroke: transparent;
+    opacity: 0.8;
+  }
+
+path.trendLine.diastolicbloodpressure {
+  display: none;
+}
+
+path.trendLine.systolicbloodpressure {
+  display: none;
+}
+
+path.trendLine {
+  pointer-events: none;
+}
+
+rect.label {
+  fill: #375B98;
+}
+
+  rect.label.pews-0to11mo {
+    fill: white;
+  }
+
+  rect.label.pews-1to4yrs {
+    fill: white;
+  }
+
+  rect.label.pews-5to12yrs {
+    fill: white;
+  }
+
+  rect.label.pews-13to18yrs {
+    fill: white;
+  }
+
+rect.score3, rect.key3 {
+  fill: #EB907A;
+}
+
+rect.score2, rect.key2 {
+  fill: #F6C587;
+}
+
+rect.score1, rect.key1 {
+  fill: #FFF1A7;
+}
+
+rect.score0 {
+  fill: #FFFFFF;
+}
+
+rect.news2.row0 {
+  fill: #FFFCDF;
+}
+
+rect.key0 {
+  fill: rgb(235, 232, 232);
+}
+
+rect.EWS_LOW {
+  fill: #FFFFFF;
+}
+
+rect.EWS_LOW-MEDIUM {
+  fill: #FFF1A7;
+}
+
+rect.EWS_MEDIUM {
+  fill: #F6C587;
+}
+
+rect.EWS_HIGH {
+  fill: #EB907A;
+}
+
+
+rect.PEWS_LOW {
+  fill: #CAD5AB;
+}
+
+rect.PEWS_LOW-MEDIUM {
+  fill: #FFF1A7;
+}
+
+rect.PEWS_MEDIUM {
+  fill: #FFF1A7;
+}
+
+rect.PEWS_HIGH {
+  fill: #EB907A;
+}
+
+
+text.keyText {
+  visibility: hidden 
+}
+
+
+text.keyText._3 {
+  font-weight: bold;
+  fill: black;
+  visibility: visible
+}
+
+text.keyText._2 {
+  font-weight: bold;
+  fill: black;
+  visibility: visible
+}
+
+text.keyText._1 {
+  font-weight: bold;
+  fill: black;
+  visibility: visible
+}
+
+text.keyText._0 {
+  font-weight: bold;
+  fill: rgb(255, 255, 255);
+  visibility: visible
+}
+
+text.labelText.newsobschart {
+  font-weight: bold;
+  fill: rgb(255, 255, 255);
+}
+
+text.secondaryLabelText {
+  font-weight: bold;
+  fill: rgb(227, 225, 225);
+}
+
+text.labelText.pews-0to11mo {
+  font-weight: bold;
+  fill: black;
+}
+
+text.labelText.pews-1to4yrs {
+  font-weight: bold;
+  fill: black;
+}
+
+text.labelText.pews-5to12yrs {
+  font-weight: bold;
+  fill: black;
+}
+
+text.labelText.pews-13to18yrs {
+  font-weight: bold;
+  fill: black;
+}
+
+rect.heading {
+  fill: #EB907A;
+}
+
+rect.news2.row0 {
+  fill: #FFF1A7;
+}
+
+rect.news2 {
+  fill: #FFFFFF;
+}
+
+rect.scorenews,
+rect.scorePEWS-0To11Mo,
+rect.scorePEWS-1To4Yrs,
+rect.scorePEWS-5To12Yrs,
+rect.scorePEWS-13To18Yrs
+ {
+  fill: #FFFFFF;
+}
+
+rect.keynews,
+rect.keyPEWS-0To11Mo,
+rect.keyPEWS-1To4Yrs,
+rect.keyPEWS-5To12Yrs,
+rect.keyPEWS-13To18Yrs
+{
+  display: none;
+}
+
+rect.hasbeenamended {
+  fill: rgb(244, 244, 244);
+}
+
+g.tick line {
+  display: none;
+}
+
+.xDateTimeAxis.dateTimeChartVerticalLine path {
+  display: none;
+}
+
+.xDateTimeAxis.dateTimeChartVerticalLine path {
+  display: none;
+}
+
+.xDateTimeAxis text {
+}
+
+.xDateTimeAxis path.domain {
+  display: none;
+}
+
+.xAxisTimeComponent {
+  text-decoration: underline;
+  font-weight: bold;
+  fill: #0066CC;
+  text-anchor: start;
+}
+
+.xAxisDateComponent {
+  text-decoration: none;
+  font-weight: bold;
+  fill: black;
+  text-anchor: start;
+}
+
+g.yAxis text {
+  fill: black;
+}
+
+text.value {
+  fill: black;
+}
+
+text.ammended {
+  font-weight: bold;
+  text-decoration: underline;
+}
+
+path.pagesButton {
+  fill: #375B98;
+  stroke: rgb(27, 46, 79);
+  stroke-width: 1px;
+  text-decoration: none;
+}
+
+.pagesButton:active {
+  fill: rgb(27, 46, 79);
+}
+
+g.yAxis path {
+  display: none;
+}
+
+text {
+  font-size: 1.2vw;
+}
+
+@media screen and (min-width: 1024px) {
+  text {
+    font-size: 14px;
+  }
+}

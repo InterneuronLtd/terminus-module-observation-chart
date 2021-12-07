@@ -1,0 +1,55 @@
+
+
+.EWS_LOW {
+  background-color: #FFFFFF;
+}
+
+.EWS_LOW-MEDIUM {
+  background-color: #FFF1A7;
+}
+
+.EWS_MEDIUM {
+  background-color: #F6C587;
+}
+
+.EWS_HIGH {
+  background-color: #EB907A;
+}
+
+.PEWS_LOW {
+  background-color: #CAD5AB;
+  color: white;
+}
+
+.PEWS_LOW-MEDIUM {
+  background-color: #FFF1A7;
+}
+
+.PEWS_MEDIUM {
+  background-color: #FFF1A7;
+}
+
+.PEWS_HIGH {
+  background-color: #EB907A;
+}
+
+
+table ul, table li {
+  margin:0;
+  padding: 0;
+  margin-left:8px;
+ 
+}
+
+.modal-dialog,
+.modal-content-setheight {
+  /* 80% of window height */
+  height: 92%;
+}
+
+.modal-body{
+  /* 100% = dialog height, 120px = header + footer */
+  max-height: calc(100% - 20px);
+  overflow-y: auto;
+  padding:0;
+}

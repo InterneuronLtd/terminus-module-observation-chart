@@ -1,0 +1,253 @@
+<!--BEGIN LICENSE BLOCK--> 
+<!--Interneuron Terminus
+
+Copyright(C) 2021  Interneuron CIC
+
+This program is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+
+See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with this program.If not, see<http://www.gnu.org/licenses/>. -->
+<!--END LICENSE BLOCK--> 
+
+
+<div class="modal" id="guidanceModal" tabindex="-1" role="dialog" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+    <div class="modal-content" [ngClass]="!observationEvent?'modal-content':'modal-content modal-content-setheight'">
+      <div class="modal-body">
+        <div class="card" style="margin-bottom:5px" #firstElement>
+          <div class="card-body" *ngIf="ewsScoreHeader  || ewsScoreHeader == '0'">
+            <h4>  {{response.scoreTypeHeading}} <span class="badge" [ngClass]="response.cssclass"> {{ewsScoreHeader}}</span> </h4>
+            <div style="padding-top:6px"><i><b>{{response.topConcernsText}}</b></i></div>
+          </div>
+          <div class="card-body" *ngIf="!(ewsScoreHeader  || ewsScoreHeader == '0')">
+            <h4><span class="text-danger"> {{guidance}}</span> </h4>
+            <div style="padding-top:6px"><i><b>{{response.topConcernsText}}</b></i></div>
+          </div>
+          <div class="card-body" style="padding-top:0px" *ngIf="ewsScoreHeader || ewsScoreHeader == '0'">
+            <div style="padding-bottom:0px">
+              <table style="text-align:left" class="table table-sm table-bordered">
+                <thead>
+                  <tr style="color:white">
+                    <th style="background-color:#4274BA" scope="col">Score</th>
+                    <th style="background-color:#4274BA" scope="col">Frequency of monitoring</th>
+                    <th style="background-color:#4274BA" scope="col">Clinical response</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <th scope="row" [ngClass]="response.cssclass">
+                      {{response.text}}
+                    </th>
+                    <td>
+                      {{response.monitoring}}
+                    </td>
+                    <td>
+                      <ul>
+                        <li *ngFor="let str of response.clinicalresponse">{{str}}</li>
+                      </ul>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+          <form [hidden]="!observationEvent" id="monitoringform" [formGroup]="obsmonitoringform" (ngSubmit)="submitMonitoring()">
+
+            <div class="card-body" style="padding-top:0px">
+              <div class="form-group">
+                <label for="txtmonitoringFrequency">Monitoring frequency (hourly)</label>
+                <label style="color:red;padding-left:2px"> *</label>
+                <!--<input formControlName="monitoringFrequency" positiveNumbersOnly enterIsNext type="number" class="form-control" id="txtmonitoringFrequency">-->
+                <select formControlName="monitoringFrequency" enterIsNext class="form-control" id="txtmonitoringFrequency">
+                  <option value="null">Unanswered</option>
+                  <option value="0.08">5 minutes (0.08 hour)</option>
+                  <option value="0.25">15 minutes (0.25 hour)</option>
+                  <option value="0.5">30 minutes (0.5 hour)</option>
+                  <option value="1">1 hour</option>
+                  <option value="2">2 hours</option>
+                  <option value="4" *ngIf="!limitMonitoringFrequency">4 hours</option>
+                  <option value="6" *ngIf="!limitMonitoringFrequency">6 hours</option>
+                  <option value="12" *ngIf="!limitMonitoringFrequency">12 hours</option>
+                  <option value="24" *ngIf="!limitMonitoringFrequency">24 hours</option>
+                  <option value="168" *ngIf="!limitMonitoringFrequency">Monitoring not clinically indicated</option>
+                </select>
+
+                <div *ngIf="obsmonitoringform['controls'].monitoringFrequency.invalid && (obsmonitoringform['controls'].monitoringFrequency.dirty || obsmonitoringform['controls'].monitoringFrequency.touched)"
+                     class="alert alert-danger">
+                  <div *ngIf="obsmonitoringform['controls'].monitoringFrequency.errors.unanswered">
+                    Monitoring frequency is required
+                  </div>
+                </div>
+              </div>
+              <div class="form-group" *ngIf="limitMonitoringFrequency">
+                <label style="padding:5px" class="alert-warning">Patient pain score is greater than or equal to {{painScoreThreshold}}. Please record observations within the next 2 hours</label>
+              </div>
+              <div *ngIf="showEscalationQuestions">
+                <div class="form-group">
+                  <label for="chkisPatientSick">Does the patient look sick?</label>
+                  <label style="color:red;padding-left:2px"> *</label>
+                  <select formControlName="isPatientSick" enterIsNext class="form-control" id="chkisPatientSick">
+                    <option value=null>Unanswered</option>
+                    <option value=true>Yes</option>
+                    <option value=false>No</option>
+                  </select>
+                  <div *ngIf="obsmonitoringform['controls'].isPatientSick.invalid && (obsmonitoringform['controls'].isPatientSick.dirty || obsmonitoringform['controls'].isPatientSick.touched)"
+                       class="alert alert-danger">
+                    <div *ngIf="obsmonitoringform['controls'].isPatientSick.errors.unanswered">
+                      Required
+                    </div>
+                  </div>
+                </div>
+                <div style="padding-left:20px" [hidden]="obsmonitoringform['controls'].isPatientSick.value != 'true'">
+                  <div class="form-group">
+                    <label for="chkcouldBeInfection">Could this be due to an infection?</label>
+                    <label style="color:red;padding-left:2px"> *</label>
+                    <select formControlName="couldBeInfection" enterIsNext class="form-control" id="chkcouldBeInfection">
+                      <option value=null>Unanswered</option>
+                      <option value=true>Yes</option>
+                      <option value=false>No</option>
+                      <option value=true-sepsis-assessment-inprogress>Yes-Sepsis Assessment in progress</option>
+
+                    </select>
+                    <div *ngIf="obsmonitoringform['controls'].couldBeInfection.invalid && (obsmonitoringform['controls'].couldBeInfection.dirty || obsmonitoringform['controls'].couldBeInfection.touched)"
+                         class="alert alert-danger">
+                      <div *ngIf="obsmonitoringform['controls'].couldBeInfection.errors.unanswered">
+                        Required
+                      </div>
+                    </div>
+                  </div>
+                  <div class="form-group" [hidden]="obsmonitoringform['controls'].couldBeInfection.value != 'true'">
+                    <label class="badge badge-info" style="padding:5px 5px 5px 5px; color:white">{{could_be_infection_warning_message}}</label>
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label for="chkconcernsAboutPatient">Do you have any other concerns about this patient?</label>
+                  <label style="color:red;padding-left:2px"> *</label>
+                  <select formControlName="concernsAboutPatient" enterIsNext class="form-control" id="chkconcernsAboutPatient">
+                    <option value=null>Unanswered</option>
+                    <option value=true>Yes</option>
+                    <option value=false>No</option>
+                  </select>
+                  <div *ngIf="obsmonitoringform['controls'].concernsAboutPatient.invalid && (obsmonitoringform['controls'].concernsAboutPatient.dirty || obsmonitoringform['controls'].concernsAboutPatient.touched)"
+                       class="alert alert-danger">
+                    <div *ngIf="obsmonitoringform['controls'].concernsAboutPatient.errors.unanswered">
+                      Required
+                    </div>
+                  </div>
+                </div>
+                <div class="form-group" [hidden]="obsmonitoringform['controls'].concernsAboutPatient.value != 'true'">
+                  <label class="badge badge-info" style="padding:5px 5px 5px 5px; color:white">{{other_concerns_about_patient_warning_message}}</label>
+                </div>
+                <div class="form-group" [hidden]="obsmonitoringform['controls'].concernsAboutPatient.value != 'true' && obsmonitoringform['controls'].isPatientSick.value != 'true' ">
+                  <!--<div class="form-check">
+                    <input formControlName="escalationofCare" enterIsNext type="checkbox" class="form-check-input" id="chkescalationofCare">
+                    <label for="chkescalationofCare">Have you escalated care?</label>
+                  </div>-->
+                  <label for="chkescalationofCare">Have you escalated care?</label>
+                  <label style="color:red;padding-left:2px"> *</label>
+                  <select formControlName="escalationofCare" enterIsNext class="form-control" id="chkescalationofCare">
+                    <option value=null>Unanswered</option>
+                    <option value=true>Yes</option>
+                    <option value=false>No</option>
+                  </select>
+
+                  <div *ngIf="obsmonitoringform['controls'].escalationofCare.invalid && (obsmonitoringform['controls'].escalationofCare.dirty || obsmonitoringform['controls'].escalationofCare.touched)"
+                       class="alert alert-danger">
+                    <div *ngIf="obsmonitoringform['controls'].escalationofCare.errors.unanswered">
+                      Required
+                    </div>
+                  </div>
+                </div>
+
+
+                <div class="form-group" *ngIf="obsmonitoringform['controls'].escalationofCare.value == 'true'">
+                  <label for="chkEscalatedToWhom">To whom have you escalated care?</label>
+                  <label style="color:red;padding-left:2px"> *</label>
+                  <select formControlName="escalatedtowhom" enterIsNext class="form-control" id="chkEscalatedToWhom">
+                    <option value=null>Unanswered</option>
+                    <option value="Registered Nurse">Registered Nurse</option>
+                    <option value="Nurse in Charge">Nurse in Charge</option>
+                    <option value="Acute Intervention Team (AIT)">Acute Intervention Team (AIT)</option>
+                    <option value="Medical Emergency Team (MET)">Medical Emergency Team (MET)</option>
+                    <option value="Crash Team">Crash Team</option>
+                    <option value="Surgical SHO">Surgical SHO</option>
+                    <option value="Registrar">Registrar</option>
+                    <option value="Consultant">Consultant</option>
+                  </select>
+
+                  <div *ngIf="obsmonitoringform['controls'].escalatedtowhom.invalid && (obsmonitoringform['controls'].escalatedtowhom.dirty || obsmonitoringform['controls'].escalatedtowhom.touched)"
+                       class="alert alert-danger">
+                    <div *ngIf="obsmonitoringform['controls'].escalatedtowhom.errors.unanswered">
+                      Required
+                    </div>
+                  </div>
+                </div>
+
+                <div class="form-group" *ngIf="obsmonitoringform['controls'].escalationofCare.value == 'false'">
+                  <label for="chkreasonforNotEscalating">Why not?</label>
+                  <label style="color:red;padding-left:2px"> *</label>
+                  <select formControlName="reasonfornotescalating" enterIsNext class="form-control" id="chkreasonforNotEscalating">
+                    <option value=null>Unanswered</option>
+                    <option value="Normal for patient">Normal for patient</option>
+                    <option value="Already escalated">Already escalated</option>
+                    <option value="AIT monitoring">AIT monitoring</option>
+                    <option value="Consultant monitoring">Consultant monitoring</option>
+                  </select>
+
+                  <div *ngIf="obsmonitoringform['controls'].reasonfornotescalating.invalid && (obsmonitoringform['controls'].reasonfornotescalating.dirty || obsmonitoringform['controls'].reasonfornotescalating.touched)"
+                       class="alert alert-danger">
+                    <div *ngIf="obsmonitoringform['controls'].reasonfornotescalating.errors.unanswered">
+                      Required
+                    </div>
+                  </div>
+                </div>
+
+                <div class="form-group">
+                  <label>SBAR Guidance</label>
+
+                  <div class="card card-body">
+                    <label>
+                      <b>(S)ituation:</b>  I am (name) a nurse on ward (X) calling about patient (X). I am concerned that...<br /><br />
+                      <b>(B)ackground:</b> Patient (X) had had operation (X). Patient (X)'s condition has changed in the last (XX) mins. Their last obs were (XXXX).<br /><br />
+                      <b>(A)ssessment:</b> I think the problem is (XXXX) and I have given (oxygen/analgesia, etc.) - or - I don't know what the problem is but the patient is deteriorating.<br /><br />
+                      <b>(R)ecommendation: </b> I need you to review the patient in the next XX mins.<br /><br />
+                      Is there anything else I need to do in the meantime?  - Repeat back any actions requested
+                    </label>
+                  </div>
+                </div>
+              </div>
+              <div class="form-group">
+                <label>Monitoring and Escalation Comments</label>
+                <textarea class="form-control" enterIsNext formControlName="monitoringcomments" rows="5" cols="50"></textarea>
+              </div>
+
+              <div class="form-group" [hidden]="obsmonitoringform.valid">
+                <label style="padding:5px" class="alert-danger">Please fill in all the fields that are marked *</label>
+              </div>
+              <div class="form-group">
+                <button type="submit" id="submitButton" style="width:100%" [disabled]="disableSubmit">Submit</button>
+              </div>
+            </div>
+          </form>
+
+        </div>
+        <div [hidden]="observationEvent" class="modal-footer" style="border-top:0px;padding:0px 2px 6px 2px">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal" #closeGuidance>Close</button>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</div>
+
+<button type="button" style="display:none" data-toggle="modal" data-target="#guidanceModal" data-backdrop="static" data-keyboard="false" #openGuidance>Open Guidance</button>
