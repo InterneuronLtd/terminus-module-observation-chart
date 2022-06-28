@@ -6,109 +6,92 @@
   "enablelogging": true,
   "appsettings": {
     "news2guidance": {
-      "topConcernsText": "Regardless of the NEWS2 score, if you have concerns please discuss with the Clinical Practitioner for the Acute Intervention Team (Bleep 665 or Vocera).",
-      "score0_frequency": "Minimum 12 hourly",
-      "score0_clinicalresponse": [
-        "Continue routine NEWS 2 monitoring"
-      ],
+      "topConcernsText": "Regardless of the NEWS2 score, if you have concerns please discuss with the Clinical Practitioner for the Acute Intervention Team (\"call Acute Intervention Team\" on Vocera).",
+      "score0_frequency": "4-12 hourly",
+      "score0_clinicalresponse": [ "Continue routine NEWS 2 monitoring" ],
       "score0_text": "0",
       "score0_cssclass": "EWS_LOW",
-      "score1to4_frequency": "Minimum 4–6 hourly",
+
+      "score1to4_frequency": "Minimum 4 hourly",
       "score1to4_clinicalresponse": [
         "Inform registered nurse, who must assess the patient",
         "Registered nurse to decide whether increased frequency of monitoring and/or escalation of care is required"
       ],
-      "score1to4_text": "Total 1–4",
+      "score1to4_text": "Total 1-4",
       "score1to4_cssclass": "EWS_LOW",
+
       "score3single_frequency": "Minimum 1 hourly",
-      "score3single_clinicalresponse": [
-        "Registered nurse to refer immediately to the Medical Emergency Team on 7777 or Vocera"
-      ],
+      "score3single_clinicalresponse": ["Registered nurse to refer immediately to the Medical Emergency Team (\"urgent broadcast to Medical Emergency Team\" on Vocera)" ],
       "score3single_text": "3 in single parameter",
       "score3single_cssclass": "EWS_LOW-MEDIUM",
+
+
       "score5to6_frequency": "Minimum 1 hourly",
       "score5to6_clinicalresponse": [
-        "Registered nurse to immediately inform the AIT Clinical Practitioner on Bleep 665 or Vocera"
+        "Registered nurse to immediately inform the AIT Clinical Practitioner (\"call Acute Intervention Team\" on Vocera)"
       ],
-      "score5to6_text": "Total 5 - 6",
+      "score5to6_text": "Total 5-6",
       "score5to6_cssclass": "EWS_MEDIUM",
+
       "score7ormore_frequency": "Continuous monitoring of vital signs",
       "score7ormore_clinicalresponse": [
-        " Registered nurse to refer immediately to the Medical Emergency Team on 7777 or Vocera"
+        "Registered nurse to refer immediately to the Medical Emergency Team (\"urgent broadcast to Medical Emergency Team\" on Vocera)"
       ],
       "score7ormore_text": "Total 7 or more",
       "score7ormore_cssclass": "EWS_HIGH"
     },
     "pewsguidance": {
-      "topConcernsText": "Regardless of the PEWS score, if you have concerns please discuss with the Clinical Practitioner for the Acute Intervention Team (Bleep 665 or Vocera).",
+      "topConcernsText": "Regardless of the PEWS score, if you have concerns please discuss with the Clinical Practitioner for the Acute Intervention Team (\"call Acute Intervention Team\" on Vocera).",
+
       "score0_text": "0",
-      "score0_frequency": "4 hourly",
-      "score0_clinicalresponse": [
-        "Continue monitoring"
-      ],
+      "score0_frequency": "4-12 hourly",
+      "score0_clinicalresponse": [ "Continue monitoring" ],
       "score0_cssclass": "PEWS_LOW",
+
       "score1_text": "1",
       "score1_frequency": "4 hourly",
-      "score1_clinicalresponse": [
-        "Continue monitoring"
-      ],
+      "score1_clinicalresponse": [ "Continue monitoring" ],
       "score1_cssclass": "PEWS_LOW",
+
       "score2_text": "2",
       "score2_frequency": "2 hourly",
-      "score2_clinicalresponse": [
-        "Nurse in charge review",
-        "Review by doctor"
-      ],
+      "score2_clinicalresponse": [ "Nurse in charge review", "Review by the paediatric medical team (08:00-20:00 hrs) or the RMO (20:00-08:00 hrs)" ],
       "score2_cssclass": "PEWS_LOW",
+
       "score3_text": "3",
       "score3_frequency": "1 hourly",
-      "score3_clinicalresponse": [
-        "Nurse in charge review",
-        "Review by doctor",
-        "Review by AIT",
-        "Consider escalation to consultant"
-      ],
+      "score3_clinicalresponse": [ "Nurse in charge review", "Review by the paediatric medical team (08:00-20:00 hrs) or the RMO (20:00-08:00 hrs)", "Review by AIT (\"call Acute Intervention Team\" on Vocera)", 	"Review by surgical team", "Inform paediatric consultant (0:00-24:00 hrs)" ],
       "score3_cssclass": "PEWS_MEDIUM",
+
       "score4_text": "4",
       "score4_frequency": "1 hourly",
-      "score4_clinicalresponse": [
-        "Nurse in charge review",
-        "Review by doctor",
-        "Review by Outreach",
-        "Consider escalation to consultant"
-      ],
+      "score4_clinicalresponse": [ "Nurse in charge review", "Review by the paediatric medical team (08:00-20:00 hrs) or the RMO (20:00-08:00 hrs)", "Review by AIT (\"call Acute Intervention Team\" on Vocera)", "Review by surgical team", "Inform paediatric consultant (0:00-24:00 hrs)"],
       "score4_cssclass": "PEWS_MEDIUM",
+
       "score5_text": "5",
       "score5_frequency": "Every 15 Minutes",
-      "score5_clinicalresponse": [
-        "Nurse in charge review",
-        "Urgent anaesthetic SpR & Paediatric SpR review",
-        "Inform Paediatric Consultant (24 hours)"
-      ],
+      "score5_clinicalresponse": [ "Registered nurse to refer immediately to the Medical Emergency Team (\"urgent broadcast to Medical Emergency Team\" on Vocera)", "Inform paediatric consultant after MET review (0:00-24:00 hrs)" ],
       "score5_cssclass": "PEWS_HIGH",
+
       "score6_text": "6",
       "score6_frequency": "Every 15 Minutes",
-      "score6_clinicalresponse": [
-        "Nurse in charge review",
-        "Urgent anaesthetic SpR & Paediatric SpR review",
-        "Inform Paediatric Consultant (24 hours)"
-      ],
+      "score6_clinicalresponse": [ "Registered nurse to refer immediately to the Medical Emergency Team (\"urgent broadcast to Medical Emergency Team\" on Vocera)", "Inform paediatric consultant after MET review (0:00-24:00 hrs)" ],
       "score6_cssclass": "PEWS_HIGH",
+
       "score7_text": "7",
       "score7_frequency": "Every 15 Minutes",
-      "score7_clinicalresponse": [
-        "Nurse in charge review",
-        "Urgent anaesthetic SpR & Paediatric SpR review",
-        "Inform Paediatric Consultant (24 hours)"
-      ],
+      "score7_clinicalresponse": [ "Registered nurse to refer immediately to the Medical Emergency Team (\"urgent broadcast to Medical Emergency Team\" on Vocera)", "Inform paediatric consultant after MET review (0:00-24:00 hrs)"],
       "score7_cssclass": "PEWS_HIGH"
+
     },
     "bp_nottaken_warning_message": "BP has not been taken in the last {{threshold}} hours, please take BP observation.",
     "bpwarningthresholdminutes": 240,
     "max_consecutive_partial_sets": 2,
     "partial_notallowed_after_mins": 30,
     "painscale_warning_threshold_score": 7,
-    "obs_due_warning": "Obs Overdue"
+    "obs_due_warning": "Obs Overdue",
+    "other_concerns_about_patient_warning_message": "Please refer to AIT (\"call Acute Intervention Team\" on Vocera)",
+    "could_be_infection_warning_message": "Please escalate and complete inpatient sepsis screening tool"
   },
   "prodbuild": true
 }

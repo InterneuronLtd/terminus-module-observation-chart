@@ -1,7 +1,7 @@
 //BEGIN LICENSE BLOCK 
 //Interneuron Terminus
 
-//Copyright(C) 2021  Interneuron CIC
+//Copyright(C) 2022  Interneuron CIC
 
 //This program is free software: you can redistribute it and/or modify
 //it under the terms of the GNU General Public License as published by
@@ -26,7 +26,6 @@ import { BsModalService, BsModalRef } from 'ngx-bootstrap/modal';
 import { AppService } from './services/app.service';
 import { Subscription, Subject } from 'rxjs';
 import { ApirequestService } from './services/apirequest.service';
-import { isArray } from 'util';
 import { filters, filterParams, filterparam, filter, selectstatement, orderbystatement, action } from './models/Filter.model';
 import * as moment from 'moment';
 import { ComponentModuleData } from './directives/module-loader.directive';
@@ -179,7 +178,7 @@ export class AppComponent implements OnDestroy {
     if (this.appService.apiService) {
       decodedToken = this.appService.decodeAccessToken(this.appService.apiService.authService.user.access_token);
       if (decodedToken != null)
-        this.appService.loggedInUserName = decodedToken.name ? (isArray(decodedToken.name) ? decodedToken.name[0] : decodedToken.name) : decodedToken.IPUId;
+        this.appService.loggedInUserName = decodedToken.name ? (Array.isArray(decodedToken.name) ? decodedToken.name[0] : decodedToken.name) : decodedToken.IPUId;
 
     }
     this.subscriptions.add(this.apiRequest.getRequest("./assets/config/ObsChartConfig.json?V" + Math.random()).subscribe(
@@ -239,7 +238,7 @@ export class AppComponent implements OnDestroy {
       synapseroles = decodedToken.SynapseRoles
     else
       synapseroles = decodedToken.client_SynapseRoles
-    if (!isArray(synapseroles)) {
+    if (!Array.isArray(synapseroles)) {
       condition = "rolename = @rolename";
       pm.filterparams.push(new filterparam("rolename", synapseroles));
     }
@@ -365,16 +364,16 @@ export class AppComponent implements OnDestroy {
 
   encounterLoadComplete() {
     //commment out to push to framework - 3lines
-    //this.appService.personId = "0422d1d0-a9d2-426a-b0b2-d21441e2f045";// "17775da9-8e71-4a3f-9042-4cdcbf97efec";// "429904ca-19c1-4a3a-b453-617c7db513a3";//"027c3400-24cd-45c1-9e3d-0f4475336394";//"429904ca-19c1-4a3a-b453-617c7db513a3";
+    // this.appService.personId = "4cede3ee-47d9-4a16-ad64-64c3e86083a0";// "17775da9-8e71-4a3f-9042-4cdcbf97efec";// "429904ca-19c1-4a3a-b453-617c7db513a3";//"027c3400-24cd-45c1-9e3d-0f4475336394";//"429904ca-19c1-4a3a-b453-617c7db513a3";
 
-    //let value: any = {};
-    //value.authService = {};
-    //value.authService.user = {};
-    //let auth = this.apiRequest.authService;
-    //auth.getToken().then((token) => {
+    // let value: any = {};
+    // value.authService = {};
+    // value.authService.user = {};
+    // let auth = this.apiRequest.authService;
+    // auth.getToken().then((token) => {
     //  value.authService.user.access_token = token;
     //  this.initConfig(value);
-    //});
+    // });
 
   }
 

@@ -1,7 +1,7 @@
 //BEGIN LICENSE BLOCK 
 //Interneuron Terminus
 
-//Copyright(C) 2021  Interneuron CIC
+//Copyright(C) 2022  Interneuron CIC
 
 //This program is free software: you can redistribute it and/or modify
 //it under the terms of the GNU General Public License as published by
@@ -43,11 +43,17 @@ export class NonNegativeNumbersDirective {
       }
 
     const initalValue = this._el.nativeElement.value;
-    this._el.nativeElement.value = initalValue.replace(/-/g, '');
-    if (initalValue !== this._el.nativeElement.value) {
+    if(initalValue.indexOf('-')!=-1)
+    {
       this._el.nativeElement.value = "";
       event.stopPropagation();
     }
+    // const initalValue = this._el.nativeElement.value;
+    // this._el.nativeElement.value = initalValue.replace(/-/g, '');
+    // if (initalValue !== this._el.nativeElement.value) {
+    //   this._el.nativeElement.value = "";
+    //   event.stopPropagation();
+    // }
 
   }
 
