@@ -1,7 +1,7 @@
 //BEGIN LICENSE BLOCK 
 //Interneuron Terminus
 
-//Copyright(C) 2023  Interneuron Holdings Ltd
+//Copyright(C) 2024  Interneuron Limited
 
 //This program is free software: you can redistribute it and/or modify
 //it under the terms of the GNU General Public License as published by
@@ -18,7 +18,19 @@
 //You should have received a copy of the GNU General Public License
 //along with this program.If not, see<http://www.gnu.org/licenses/>.
 //END LICENSE BLOCK 
-
+/* Interneuron Observation App
+Copyright(C) 2023  Interneuron Holdings Ltd
+This program is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+See the
+GNU General Public License for more details.
+You should have received a copy of the GNU General Public License
+along with this program.If not, see<http://www.gnu.org/licenses/>. */
 
 import { Component, ViewChild, ElementRef, OnDestroy, Input, Output, EventEmitter, TemplateRef } from '@angular/core';
 import { SubjectsService } from './services/subjects.service';
@@ -29,6 +41,9 @@ import { ApirequestService } from './services/apirequest.service';
 import { filters, filterParams, filterparam, filter, selectstatement, orderbystatement, action } from './models/Filter.model';
 import * as moment from 'moment';
 import { ComponentModuleData } from './directives/module-loader.directive';
+import { RTNoificationUtilService, RTNotificationsHandlerParams, subscribeToReceivedNotification } from './notification/lib/notification.observable.util';
+import { ToastrService } from 'ngx-toastr';
+import { SessionStorageService } from 'angular-web-storage';
 
 @Component({
   selector: 'app-root',
@@ -43,6 +58,8 @@ export class AppComponent implements OnDestroy {
   showNoEncounterMsg = false;
   showSepsisModule = false;
   componentModuleData: ComponentModuleData;
+  height: any;
+  weight:any;
   encountersListLoaded(value: boolean) {
     this.hasEncounters = value;
     this.showNoEncounterMsg = !value;
@@ -67,6 +84,7 @@ export class AppComponent implements OnDestroy {
   blurObsModal = false;
   @Input() set personid(value: string) {
     this.appService.personId = value;
+   
   }
   @Input() set apiservice(value: any) {
 
@@ -87,8 +105,9 @@ export class AppComponent implements OnDestroy {
   }
   @Output() frameworkAction = new EventEmitter<string>();
 
-  constructor(private subjects: SubjectsService, private modalService: BsModalService, public appService: AppService, private apiRequest: ApirequestService) {
+  constructor(private subjects: SubjectsService, private modalService: BsModalService, public appService: AppService, private apiRequest: ApirequestService, private toastrService: ToastrService, private sessionStorageService: SessionStorageService) {
 
+    
     this.subscriptions.add(this.subjects.openObsForm.subscribe((formHeader: string) => {
       this.observationsFormHeader = formHeader;
       this.openObsFormButton.nativeElement.click();
@@ -118,7 +137,26 @@ export class AppComponent implements OnDestroy {
       this.obsUpdateFrameworkEvents(eventType);
     }));
 
+    this.subscribeForRTNotifications();
   }
+
+  subscribeForRTNotifications() {
+    const notificationTypes = [
+      //{ name: 'OBSERVATION_ADDED', msgPropNameOrMsg: 'obs_added_notification_msg',  currentModuleName: 'app-element' }
+      { name: 'OBSERVATION_ADDED', msgPropNameOrMsg: 'obs_added_notification_msg' }
+    ];
+    const paramData: RTNotificationsHandlerParams = {
+      getAppSettings: () => {
+        console.log('calling alert for appsettings session in observation',
+          this.sessionStorageService.get('observation:appSettings'));
+        return this.sessionStorageService.get('observation:appsettings');
+      },
+      notificationTypes
+    };
+
+    subscribeToReceivedNotification('OBS_NOTIFICATION_APP_COMP', (res) => new RTNoificationUtilService().rtNotificationsHandler(paramData, res));
+  }
+
   isDue() {
 
     if (this.appService.nextObsDueTime)
@@ -188,6 +226,11 @@ export class AppComponent implements OnDestroy {
         this.appService.autonomicsBaseURI = this.appService.appConfig.uris.autonomicsbaseuri;
         this.appService.enableLogging = this.appService.appConfig.enablelogging;
         
+        //Adding AppSettings to the session
+        const appConfigFromParam = this.appService?.appConfig;
+        const appSettingsFromParam = {...appConfigFromParam?.appsettings};
+        this.sessionStorageService.set('observation:appsettings', appSettingsFromParam);
+        this.getHeightWeight();
         //get actions for rbac
         this.subscriptions.add(this.apiRequest.postRequest(`${this.appService.baseURI}/GetBaseViewListByPost/rbac_actions`, this.createRoleFilter(decodedToken))
           .subscribe((response: action[]) => {
@@ -329,6 +372,69 @@ export class AppComponent implements OnDestroy {
   obsUpdateFrameworkEvents(event) {
     this.appService.logToConsole(event);
     this.frameworkAction.emit(event);
+  }
+  openRecordWeightModal() {
+    this.frameworkAction.emit("OPEN_WEIGHT");
+  }
+  openRecordHeightModal() {
+    this.frameworkAction.emit("OPEN_HEIGHT");
+  }
+  createFilter() {
+    //let condition = "person_id = @person_id and encounter_id = @encounter_id";
+    let condition = "person_id = @person_id";
+
+    let f = new filters()
+    f.filters.push(new filter(condition));
+
+    let pm = new filterParams();
+    pm.filterparams.push(new filterparam("person_id", this.appService.personId));
+    // pm.filterparams.push(new filterparam("encounter_id", this.appService.encounter.encounter_id));
+
+    let select = new selectstatement("SELECT *");
+
+    let orderby = new orderbystatement("ORDER BY observationeventdatetime desc");
+
+    let body = [];
+    body.push(f);
+    body.push(pm);
+    body.push(select);
+    body.push(orderby);
+
+    return JSON.stringify(body);
+  }
+  getHeightWeight(){
+    this.subscriptions.add(this.apiRequest.postRequest(`${this.appService.baseURI}/GetBaseViewListByPost/epma_getweightobservations`, this.createFilter())
+    .subscribe((response) => {
+
+      if (response.length > 0) {
+      
+        if (response[0].value != "" || response[0].value != null) {
+          this.weight = response[0].value;
+        
+
+        } else {
+          this.weight = 0;
+        }
+      } else {
+        this.weight = 0;
+      }
+    }
+    ))
+    this.subscriptions.add(this.apiRequest.postRequest(`${this.appService.baseURI}/GetBaseViewListByPost/epma_getheightobservations`, this.createFilter())
+    .subscribe((response) => {
+      
+        if (response.length > 0) {
+          if (response[0].value != "" || response[0].value != null) {
+            this.height = response[0].value;
+          } else {
+            this.height = 0;
+          }
+        } else {
+          this.height = 0;
+        }
+      }
+      ));
+
   }
 
   loadAssessmentModuleDetail(observationEventID: string) {

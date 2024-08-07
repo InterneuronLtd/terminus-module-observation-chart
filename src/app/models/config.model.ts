@@ -1,7 +1,7 @@
 //BEGIN LICENSE BLOCK 
 //Interneuron Terminus
 
-//Copyright(C) 2023  Interneuron Holdings Ltd
+//Copyright(C) 2024  Interneuron Limited
 
 //This program is free software: you can redistribute it and/or modify
 //it under the terms of the GNU General Public License as published by
@@ -117,7 +117,9 @@ export class Appsettings {
   public obs_due_warning: string;
   public other_concerns_about_patient_warning_message: string;
   public could_be_infection_warning_message: string;
-
+  public obs_added_notification_msg: string;
+  public can_send_notification: boolean;
+  public can_receive_notification: boolean;
 }
 
 export class configmodel {

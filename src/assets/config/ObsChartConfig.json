@@ -91,7 +91,10 @@
     "painscale_warning_threshold_score": 7,
     "obs_due_warning": "Obs Overdue",
     "other_concerns_about_patient_warning_message": "Please refer to AIT (\"call Acute Intervention Team\" on Vocera)",
-    "could_be_infection_warning_message": "Please escalate and complete inpatient sepsis screening tool"
+    "could_be_infection_warning_message": "Please escalate and complete inpatient sepsis screening tool",
+    "obs_added_notification_msg": "New observation has been added for this patient by the other user.",
+    "can_send_notification": true,
+    "can_receive_notification": true
   },
   "prodbuild": true
 }

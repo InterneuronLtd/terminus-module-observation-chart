@@ -1,7 +1,7 @@
 //BEGIN LICENSE BLOCK 
 //Interneuron Terminus
 
-//Copyright(C) 2023  Interneuron Holdings Ltd
+//Copyright(C) 2024  Interneuron Limited
 
 //This program is free software: you can redistribute it and/or modify
 //it under the terms of the GNU General Public License as published by
@@ -18,7 +18,19 @@
 //You should have received a copy of the GNU General Public License
 //along with this program.If not, see<http://www.gnu.org/licenses/>.
 //END LICENSE BLOCK 
-
+/* Interneuron Observation App
+Copyright(C) 2023  Interneuron Holdings Ltd
+This program is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+See the
+GNU General Public License for more details.
+You should have received a copy of the GNU General Public License
+along with this program.If not, see<http://www.gnu.org/licenses/>. */
 import { Component, OnInit, ViewChild, ElementRef, OnDestroy } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { SubjectsService } from '../services/subjects.service';
@@ -36,11 +48,11 @@ export class DeleteObservationeventComponent implements OnInit, OnDestroy {
   public chartEvent: any = {}
   observationEvent: any = {};
   subscriptions: Subscription = new Subscription();
-  reasonForRemoval: string = "";
+  //reasonForRemoval: string = "";
   disableRemove: boolean = true;
   @ViewChild('openDelete') openDelete: ElementRef;
   @ViewChild('closeDelete') closeDelete: ElementRef;
-
+  @ViewChild('reasonForRemoval') reasonForRemoval: ElementRef;
   @ViewChild('openConfirm') openConfirm: ElementRef;
   @ViewChild('closeConfirm') closeConfirm: ElementRef;
   oldObservations: any = []
@@ -63,7 +75,8 @@ export class DeleteObservationeventComponent implements OnInit, OnDestroy {
       }));
   }
   onReasonChange(reason: string) {
-    this.reasonForRemoval = reason;
+    //this.reasonForRemoval = reason;
+    this.reasonForRemoval.nativeElement.value = reason;
     if (!(/\S/.test(reason)))
       this.disableRemove = true;
     else
@@ -95,6 +108,8 @@ export class DeleteObservationeventComponent implements OnInit, OnDestroy {
   }
 
   openConfirmModal() {
+    this.reasonForRemoval.nativeElement.value = "";
+    this.disableRemove = true;
     this.openConfirm.nativeElement.click();
 
   }
@@ -146,7 +161,10 @@ export class DeleteObservationeventComponent implements OnInit, OnDestroy {
 
 
               r.sortOrder = obsSortOrder[obscode];
-              this.oldObservations.push(r);
+              //this.oldObservations.push(r);
+              if(r.displayName != 'Height' && r.displayName != 'Weight'){
+                this.oldObservations.push(r);
+              }
             }
 
 
@@ -179,7 +197,7 @@ export class DeleteObservationeventComponent implements OnInit, OnDestroy {
             this.apiRequest.getRequest(`${this.appService.baseURI}/GetBaseViewListObjectByAttribute/carerecord_observations?synapseattributename=observationevent_id&attributevalue=${observationevent_id}`)
               .subscribe
               ((ews) => {
-                let cleanJson = (ews || '').replace(/"{/g, '{').replace(/}\"/g, '}').replace(/\\"/g, '"');
+                let cleanJson = (ews || '').replace(/"{/g, '{').replace(/}\"/g, '}').replace(/\\"/g, '"').replace(/\\"/g, '"');
                 if (cleanJson) {
                   if ((JSON.parse(cleanJson)).earlywarningscore && (JSON.parse(cleanJson)).earlywarningscore.observationvalue != null) {
                     let ewsScore: any = {};
@@ -303,7 +321,8 @@ export class DeleteObservationeventComponent implements OnInit, OnDestroy {
 
       //Smoke Test	6	Current Reqmt	Need to capture a reason for removing a set of observations	Discussed in design sessions	agreed	P1	"Add Reason for Removing a set of Observation (TextArea) and make it mandatory
       //this.observationEvent.reasonforamend = "Deleting observations because they are being invalidated";
-      this.observationEvent.reasonfordelete = this.reasonForRemoval;
+      //this.observationEvent.reasonfordelete = this.reasonForRemoval;
+      this.observationEvent.reasonfordelete = this.reasonForRemoval.nativeElement.value;
 
       this.apiRequest.postRequest(this.appService.baseURI + "/PostObject?synapsenamespace=core&synapseentityname=observationevent", JSON.stringify(this.observationEvent))
         .subscribe(

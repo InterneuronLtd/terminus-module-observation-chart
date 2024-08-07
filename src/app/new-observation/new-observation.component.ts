@@ -1,7 +1,7 @@
 //BEGIN LICENSE BLOCK 
 //Interneuron Terminus
 
-//Copyright(C) 2023  Interneuron Holdings Ltd
+//Copyright(C) 2024  Interneuron Limited
 
 //This program is free software: you can redistribute it and/or modify
 //it under the terms of the GNU General Public License as published by
@@ -18,7 +18,19 @@
 //You should have received a copy of the GNU General Public License
 //along with this program.If not, see<http://www.gnu.org/licenses/>.
 //END LICENSE BLOCK 
-
+/* Interneuron Observation App
+Copyright(C) 2023  Interneuron Holdings Ltd
+This program is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+See the
+GNU General Public License for more details.
+You should have received a copy of the GNU General Public License
+along with this program.If not, see<http://www.gnu.org/licenses/>. */
 import { Component, OnInit, OnDestroy, Output, EventEmitter, ViewChild, ElementRef } from '@angular/core';
 import { FormBuilder, Validators, FormGroup, AbstractControl, FormControl } from '@angular/forms';
 import { ApirequestService } from '../services/apirequest.service';
@@ -28,6 +40,7 @@ import { SubjectsService } from '../services/subjects.service';
 import { AppService } from '../services/app.service';
 import { Subscription } from 'rxjs';
 import * as moment from 'moment';
+import { AudienceType, publishSenderNotificationWithParams } from '../notification/lib/notification.observable.util';
 
 @Component({
   selector: 'app-new-observation',
@@ -305,6 +318,12 @@ export class NewObservationComponent implements OnInit, OnDestroy {
             let responseEvent = JSON.parse(response_event);
             for (let r of responseArray) {
               this.oldObservations.push(<Observation>r);
+            }
+
+            if(responseArray.length == 0){
+              let obs = new Observation();
+              obs.observationevent_id = observationevent_id;
+              this.oldObservations.push(obs);
             }
 
             for (const field in (<FormGroup>this.obsForm.get('genObs.newsMandatory')).controls) {
@@ -1038,7 +1057,7 @@ export class NewObservationComponent implements OnInit, OnDestroy {
             if (this.oldObservations)
               for (var i = 0; i < this.oldObservations.length; i++) {
                 let res = this.obsTypes.filter(typ => typ.observationtype_id == this.oldObservations[i].observationtype_id);
-                if (res && (res[0].code == "OXYGENDEV" || res[0].code == "INSPIREO2PERCENTAGE" || res[0].code == "INSPIREO2LITREPERMIN" || res[0].code == "concerns") && this.oldObservations[i].value != null)
+                if (res && res.length > 0 &&  (res[0].code == "OXYGENDEV" || res[0].code == "INSPIREO2PERCENTAGE" || res[0].code == "INSPIREO2LITREPERMIN" || res[0].code == "concerns") && this.oldObservations[i].value != null)
                   if (observations.filter(obs => obs.observation_id == this.oldObservations[i].observation_id).length == 0)
                     observations.push(new Observation(
                       this.oldObservations[i].observation_id,
@@ -1060,6 +1079,9 @@ export class NewObservationComponent implements OnInit, OnDestroy {
 
             this.subscriptions.add(this.apiRequest.postRequest(this.appService.baseURI + "/PostObjectArray?synapsenamespace=core&synapseentityname=observation", JSON.stringify(observations)).
               subscribe((resp) => {
+
+                if(this.appService.appConfig.appsettings.can_send_notification)
+                  publishSenderNotificationWithParams('OBSERVATION_ADDED', null, JSON.stringify(observations),  AudienceType.ALL_SESSIONS_EXCEPT_CURRENT_SESSION);
 
                 //obs created, close modal
                 this.subjects.closeObsForm.next({ result: "complete", message: "Observations Added. Getting Guidance..." });

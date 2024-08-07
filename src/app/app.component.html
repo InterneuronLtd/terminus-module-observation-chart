@@ -1,7 +1,7 @@
 <!--BEGIN LICENSE BLOCK--> 
 <!--Interneuron Terminus
 
-Copyright(C) 2023  Interneuron Holdings Ltd
+Copyright(C) 2024  Interneuron Limited
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -18,7 +18,19 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with this program.If not, see<http://www.gnu.org/licenses/>. -->
 <!--END LICENSE BLOCK--> 
-
+<!-- Interneuron Observation App
+Copyright(C) 2023  Interneuron Holdings Ltd
+This program is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+See the
+GNU General Public License for more details.
+You should have received a copy of the GNU General Public License
+along with this program.If not, see<http://www.gnu.org/licenses/>.  -->
 
 <div [hidden]="!hasEncounters" style="padding-left:10px">
   <!--<select (change) ="passpid($event.target.value)" class="form-control" id="txtconsciousLevel">
@@ -45,6 +57,26 @@ along with this program.If not, see<http://www.gnu.org/licenses/>. -->
     <button type="button" *ngIf="appService.authoriseAction('add observations')" [hidden]="!obsLoaded" class="btn btn-success" data-toggle="modal" data-target="#obsModal" data-backdrop="static" data-keyboard="false" (click)="openObsModal()">
       Add Observations
     </button>
+  </div>
+
+  <div class="btn-group  ml-1 mt-1">
+    <div class="col" style="padding-left: 25px;">
+      <div class="row">
+        <span  (click)="openRecordHeightModal()" >Height:  <span class="h6">{{height}} cm</span>
+          <img class="Reference_height" src="assets/images/Edit _Button_Small.svg"/>
+        </span>
+      </div>     
+    </div>
+  </div>
+  
+  <div class="btn-group  ml-1 mt-1">
+    <div class="col"  style="padding-left: 24px;">
+      <div class="row">
+        <span (click)="openRecordWeightModal()" >Weight:  <span class="h6">{{weight}} kg</span>
+          <img class="Reference_weight" src="assets/images/Edit _Button_Small.svg"/>
+        </span>
+      </div>     
+    </div>
   </div>
   <div class="btn-group ml-1 mt-1" *ngIf="isCurrentEncounter">
     <div *ngIf="isDue()" class="text-danger font-weight-bold"> {{appService.appConfig.appsettings.obs_due_warning}}</div>
