@@ -60,7 +60,7 @@ along with this program.If not, see<http://www.gnu.org/licenses/>.  -->
       <div class="modal-footer" [hidden]="!observationEvent.observationevent_id" style="border-top:0px;padding:0px 2px 6px 2px">
         <button type="button" class="btn btn-primary" (click)="amendObservationEvent()" *ngIf="isCurrentEncounter">Amend</button>
         <button type="button" class="btn btn-danger" (click)="openConfirmDialog()" *ngIf="isCurrentEncounter">Remove</button>
-        <button type="button" class="btn btn-secondary" data-dismiss="modal" #closeDelete>Cancel</button>
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" #closeDelete>Cancel</button>
       </div>
     </div>
   </div>
@@ -80,15 +80,15 @@ along with this program.If not, see<http://www.gnu.org/licenses/>.  -->
       </div>
       <div class="modal-footer" style="border-top:0px;padding:0px 2px 6px 2px">
         <button type="button" class="btn btn-danger" [disabled]="disableRemove" (click)="deleteObservationEvent()" *ngIf="isCurrentEncounter">Remove</button>
-        <button type="button" class="btn btn-secondary" (click)="closeConfirmDialog()" data-dismiss="modal">Cancel</button>
-        <button type="button" class="btn btn-secondary" style="display:none" data-dismiss="modal" #closeConfirm></button>
+        <button type="button" class="btn btn-secondary" (click)="closeConfirmDialog()" data-bs-dismiss="modal">Cancel</button>
+        <button type="button" class="btn btn-secondary" style="display:none" data-bs-dismiss="modal" #closeConfirm></button>
 
       </div>
     </div>
   </div>
 </div>
-<button type="button" style="display:none" data-toggle="modal" data-target="#deleteModal" #openDelete></button>
+<button type="button" style="display:none" data-bs-toggle="modal" data-bs-target="#deleteModal" #openDelete></button>
 
-<button type="button" style="display:none" data-toggle="modal" data-target="#confirmModal" #openConfirm></button>
+<button type="button" style="display:none" data-bs-toggle="modal" data-bs-target="#confirmModal" #openConfirm></button>
 
 

@@ -44,7 +44,7 @@ along with this program.If not, see<http://www.gnu.org/licenses/>.  -->
   </select>-->
   <app-news-guidlines></app-news-guidlines>
 
-  <button type="button" style="display:none" data-toggle="modal" data-target="#obsModal" #openObsForm></button>
+  <button type="button" style="display:none"data-bs-toggle="modal" data-bs-target="#obsModal" #openObsForm></button>
 
   <div class="btn-group ml-1 mt-1">
     <app-encounter-navigation (loadComplete)="encounterLoadComplete()" (clicked)="removeXaxisCss()"
@@ -54,7 +54,7 @@ along with this program.If not, see<http://www.gnu.org/licenses/>.  -->
     <app-person-scaletype *ngIf="appService.authoriseAction('change scale')" (click)="removeXaxisCss()"></app-person-scaletype>
   </div>
   <div class="btn-group  ml-1 mt-1" *ngIf="isCurrentEncounter">
-    <button type="button" *ngIf="appService.authoriseAction('add observations')" [hidden]="!obsLoaded" class="btn btn-success" data-toggle="modal" data-target="#obsModal" data-backdrop="static" data-keyboard="false" (click)="openObsModal()">
+    <button type="button" *ngIf="appService.authoriseAction('add observations')" [hidden]="!obsLoaded" class="btn btn-success"data-bs-toggle="modal" data-bs-target="#obsModal" (click)="openObsModal()">
       Add Observations
     </button>
   </div>
@@ -110,8 +110,8 @@ along with this program.If not, see<http://www.gnu.org/licenses/>.  -->
   </ng-template>-->
 
 
-  <div [ngClass]="blurObsModal?'modal enableBlur':'modal'" id="obsModal" tabindex="-1" role="dialog" aria-hidden="true">
-    <div class="modal-dialog  modal-dialog-centered modal-lg" role="document">
+  <div [ngClass]="blurObsModal?'modal enableBlur':'modal'" id="obsModal" tabindex="-1" role="dialog" aria-hidden="true"  data-bs-backdrop="static" data-bs-keyboard="false">
+    <div class="modal-dialog  modal-dialog-centered modal-lg" role="document" >
       <div class="modal-content">
         <div class="modal-header" style="padding-top:10px;padding-bottom:2px;">
           <h5 id="modalLabel">{{observationsFormHeader}}</h5>
@@ -123,7 +123,7 @@ along with this program.If not, see<http://www.gnu.org/licenses/>.  -->
           <app-new-observation (loadComplete)="obsLoadComplete()" (updateFrameworkEvents)="obsUpdateFrameworkEvents($event)"></app-new-observation>
         </div>
         <div class="modal-footer" style="padding-top:5px;padding-bottom:5px;">
-          <button type="button" style="display:none" class="btn btn-secondary" data-dismiss="modal" #closObsForm>close</button>
+          <button type="button" style="display:none" class="btn btn-secondary" data-bs-dismiss="modal" #closObsForm>close</button>
         </div>
       </div>
     </div>

@@ -1,6 +1,6 @@
 {
   "uris": {
-    "baseuri": "SYNAPSE_DYNAMIC_URI",
+ "baseuri": "SYNAPSE_DYNAMIC_URI",
     "autonomicsbaseuri": "AUTONOMIC_URI/Autonomic"
   },
   "enablelogging": true,

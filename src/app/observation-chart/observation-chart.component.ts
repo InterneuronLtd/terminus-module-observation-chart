@@ -361,7 +361,7 @@ export class ObservationChartComponent implements AfterViewInit, OnDestroy {
 
       //registered onclick event on each text element of the x-axis (both time and date text elements)
       headerSvgGroup.selectAll(".tick text")
-      .on("click", (d) => {
+      .on("click", (event,d) => {
         this.dateWasTapped(d);
       });
 

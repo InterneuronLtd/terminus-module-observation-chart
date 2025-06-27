@@ -348,9 +348,9 @@ export class ObservationGraph {
 
               return "translate(" + x + "," + y + ") rotate(" + rotation + ")";
             })
-            .on("click", (d) => {
+            .on("click", (event,d) => {
               const observation: Observation = { units: this.observationParameterGraph.units, hasbeenammended: d[this.observationParameterGraph.parameterkey[index]].hasbeenammended, observationvalue: d[this.observationParameterGraph.parameterkey[index]].observationvalue };
-              this.dataTapped(observation, d.observationevent_id, this.observationParameterGraph.parameterkey[index], d.scale);
+              this.dataTapped(observation, d.observationevent_id, this.observationParameterGraph.parameterkey[index], d.scale,event);
               return;
             });
 
@@ -500,9 +500,9 @@ export class ObservationGraph {
               }
               return "translate(0,0)";
             })
-            .on("click", (d) => {
+            .on("click", (event,d) => {
               const observation: Observation = { units: this.observationParameterGraph.units, hasbeenammended: d[this.observationParameterGraph.parameterkey[index]].hasbeenammended, observationvalue: d[this.observationParameterGraph.parameterkey[index]].observationvalue, guidance: d[this.observationParameterGraph.parameterkey[index]].guidance };
-              this.dataTapped(observation, d.observationevent_id, this.observationParameterGraph.parameterkey[index], d.scale);
+              this.dataTapped(observation, d.observationevent_id, this.observationParameterGraph.parameterkey[index], d.scale,event);
             });
           break;
         }
@@ -630,10 +630,11 @@ export class ObservationGraph {
       .attr("d", this.lineGenerator(lineCoordinates));
   };
 
-  dataTapped(observation: Observation, observationevent_id: string, name: string, scale: string): void {
+  dataTapped(observation: Observation, observationevent_id: string, name: string, scale: string,event:any): void {
     dataWasTapped = true;
+    
     var tooltip = d3.select("body").append("div").attr("class", "tooltip").style("opacity", 0).style("position", "absolute");
-    tooltip.style("opacity", 1).style("left", d3.event.pageX - this.dataPointSize * 0.77 + "px").style("top", d3.event.pageY - this.dataPointSize * 2.4 + "px");
+     tooltip.style("opacity", 1).style("left", event.pageX - this.dataPointSize * 0.77 + "px").style("top", event.pageY - this.dataPointSize * 2.4 + "px");
     var value = observation.observationvalue != null ? observation.observationvalue : ""
     if (value === true) { value = "Yes" } else if (value === false) { value = "No" };
     //

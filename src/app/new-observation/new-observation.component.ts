@@ -32,7 +32,7 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with this program.If not, see<http://www.gnu.org/licenses/>. */
 import { Component, OnInit, OnDestroy, Output, EventEmitter, ViewChild, ElementRef } from '@angular/core';
-import { FormBuilder, Validators, FormGroup, AbstractControl, FormControl } from '@angular/forms';
+import { UntypedFormBuilder, Validators, UntypedFormGroup, AbstractControl, UntypedFormControl } from '@angular/forms';
 import { ApirequestService } from '../services/apirequest.service';
 import { Observation, Observationtype, Observationevent, obsNames, Oxygendevices, Observationscaletype, Observationtypemeasurement, PersonObservationScale, ObservationEventMonitoring } from '../models/observations.model'
 import { v4 as uuid } from 'uuid';
@@ -128,7 +128,7 @@ export class NewObservationComponent implements OnInit, OnDestroy {
   private firstElementPews: ElementRef;
   isNewsScale: boolean;
 
-  constructor(private fb: FormBuilder, private apiRequest: ApirequestService, private subjects: SubjectsService, public appService: AppService) {
+  constructor(private fb: UntypedFormBuilder, private apiRequest: ApirequestService, private subjects: SubjectsService, public appService: AppService) {
 
     this.onChanges();
     this.setNewsRequiredValidator(false);
@@ -291,7 +291,7 @@ export class NewObservationComponent implements OnInit, OnDestroy {
     //this.obsForm.get('genObs.supplementalOxygen').setValue(false);
     //this.obsForm.get('genObs.supplementalOxygen').updateValueAndValidity();
 
-    for (const field in (<FormGroup>this.obsForm.get('genObs.oxyGrp')).controls) {
+    for (const field in (<UntypedFormGroup>this.obsForm.get('genObs.oxyGrp')).controls) {
       const control = this.obsForm.get('genObs.oxyGrp.' + field);
       if (control) {
         control.clearValidators();
@@ -326,7 +326,7 @@ export class NewObservationComponent implements OnInit, OnDestroy {
               this.oldObservations.push(obs);
             }
 
-            for (const field in (<FormGroup>this.obsForm.get('genObs.newsMandatory')).controls) {
+            for (const field in (<UntypedFormGroup>this.obsForm.get('genObs.newsMandatory')).controls) {
               const control = this.obsForm.get('genObs.newsMandatory.' + field);
               if (control) {
                 //get old value
@@ -334,7 +334,7 @@ export class NewObservationComponent implements OnInit, OnDestroy {
               }
             }
 
-            for (const field in (<FormGroup>this.obsForm.get('genObs.oxyGrp')).controls) {
+            for (const field in (<UntypedFormGroup>this.obsForm.get('genObs.oxyGrp')).controls) {
               const control = this.obsForm.get('genObs.oxyGrp.' + field);
               if (control) {
                 //get old value
@@ -342,7 +342,7 @@ export class NewObservationComponent implements OnInit, OnDestroy {
               }
             }
 
-            for (const field in (<FormGroup>this.obsForm.get('genObs')).controls) {
+            for (const field in (<UntypedFormGroup>this.obsForm.get('genObs')).controls) {
               const control = this.obsForm.get('genObs.' + field);
               if (control) {
                 //get old value
@@ -350,7 +350,7 @@ export class NewObservationComponent implements OnInit, OnDestroy {
               }
             }
 
-            for (const field in (<FormGroup>this.obsForm.get('otherObs')).controls) {
+            for (const field in (<UntypedFormGroup>this.obsForm.get('otherObs')).controls) {
               const control = this.obsForm.get('otherObs.' + field);
               if (control) {
                 //get old value
@@ -358,7 +358,7 @@ export class NewObservationComponent implements OnInit, OnDestroy {
               }
             }
 
-            for (const field in (<FormGroup>this.obsForm.get('otherObs')).controls) {
+            for (const field in (<UntypedFormGroup>this.obsForm.get('otherObs')).controls) {
               const control = this.obsForm.get('otherObs.' + field);
               if (control) {
                 //get old value
@@ -366,7 +366,7 @@ export class NewObservationComponent implements OnInit, OnDestroy {
               }
             }
 
-            for (const field in (<FormGroup>this.obsForm.get('pewsOnlyObs')).controls) {
+            for (const field in (<UntypedFormGroup>this.obsForm.get('pewsOnlyObs')).controls) {
               const control = this.obsForm.get('pewsOnlyObs.' + field);
               if (control) {
                 //get old value
@@ -541,7 +541,7 @@ export class NewObservationComponent implements OnInit, OnDestroy {
               this.appService.setCurrentScale();
               this.loadComplete.emit("Observations form component ready");
 
-              this.subjects.drawGraph.next();
+              this.subjects.drawGraph.next(true);
 
               this.appService.isInitComplete = true;
             }
@@ -570,7 +570,7 @@ export class NewObservationComponent implements OnInit, OnDestroy {
   onChanges(): void {
     this.subscriptions.add(this.obsForm.get('genObs.supplementalOxygen').valueChanges.subscribe(checked => {
       if (checked != "true") {
-        for (const field in (<FormGroup>this.obsForm.get('genObs.oxyGrp')).controls) {
+        for (const field in (<UntypedFormGroup>this.obsForm.get('genObs.oxyGrp')).controls) {
           const control = this.obsForm.get('genObs.oxyGrp.' + field);
           if (control) {
             control.clearValidators();
@@ -681,7 +681,7 @@ export class NewObservationComponent implements OnInit, OnDestroy {
       this.obsForm.get('genObs.oxyGrp.oxygenDevice').setValidators(Validators.required);
 
     }
-    for (const field in (<FormGroup>this.obsForm.get('genObs.oxyGrp')).controls) {
+    for (const field in (<UntypedFormGroup>this.obsForm.get('genObs.oxyGrp')).controls) {
       const control = this.obsForm.get('genObs.oxyGrp.' + field);
       if (control) {
         control.updateValueAndValidity();
@@ -731,14 +731,14 @@ export class NewObservationComponent implements OnInit, OnDestroy {
 
     this.obsForm.get('genObs.newsMandatory.consciousLevel').clearValidators();
 
-    for (const field in (<FormGroup>this.obsForm.get('genObs.newsMandatory')).controls) {
+    for (const field in (<UntypedFormGroup>this.obsForm.get('genObs.newsMandatory')).controls) {
       const control = this.obsForm.get('genObs.newsMandatory.' + field);
       if (control) {
         control.updateValueAndValidity();
       }
     }
 
-    for (const field in (<FormGroup>this.obsForm.get('genObs.oxyGrp')).controls) {
+    for (const field in (<UntypedFormGroup>this.obsForm.get('genObs.oxyGrp')).controls) {
       const control = this.obsForm.get('genObs.oxyGrp.' + field);
       if (control) {
         control.updateValueAndValidity();
@@ -750,7 +750,7 @@ export class NewObservationComponent implements OnInit, OnDestroy {
     this.obsForm.get('pewsOnlyObs.respdistress').clearValidators();
     this.obsForm.get('pewsOnlyObs.reasonfornobp').clearValidators();
 
-    for (const field in (<FormGroup>this.obsForm.get('pewsOnlyObs')).controls) {
+    for (const field in (<UntypedFormGroup>this.obsForm.get('pewsOnlyObs')).controls) {
       const control = this.obsForm.get('pewsOnlyObs.' + field);
       if (control) {
         control.updateValueAndValidity();
@@ -823,21 +823,21 @@ export class NewObservationComponent implements OnInit, OnDestroy {
 
     this.obsForm.get('genObs.newsMandatory.consciousLevel').setValidators(this.isUnansweredValidator);
 
-    for (const field in (<FormGroup>this.obsForm.get('genObs.newsMandatory')).controls) {
+    for (const field in (<UntypedFormGroup>this.obsForm.get('genObs.newsMandatory')).controls) {
       const control = this.obsForm.get('genObs.newsMandatory.' + field);
       if (control) {
         control.updateValueAndValidity();
       }
     }
 
-    for (const field in (<FormGroup>this.obsForm.get('genObs.oxyGrp')).controls) {
+    for (const field in (<UntypedFormGroup>this.obsForm.get('genObs.oxyGrp')).controls) {
       const control = this.obsForm.get('genObs.oxyGrp.' + field);
       if (control) {
         control.updateValueAndValidity();
       }
     }
 
-    for (const field in (<FormGroup>this.obsForm.get('pewsOnlyObs')).controls) {
+    for (const field in (<UntypedFormGroup>this.obsForm.get('pewsOnlyObs')).controls) {
       const control = this.obsForm.get('pewsOnlyObs.' + field);
       if (control) {
         control.updateValueAndValidity();
@@ -1109,14 +1109,14 @@ export class NewObservationComponent implements OnInit, OnDestroy {
                       this.subjects.openGuidance.next({ score: null, guidance: "Could not calculate " + scaleType + " Score: " + guidance.error, observationevent_id: newObsEvent.observationevent_id, observationevent: newObsEvent, observations: observations, ewsScaleType: ewsScaleType });
 
                     }
-                    this.subjects.drawGraph.next();
+                    this.subjects.drawGraph.next(true);
                     //this.updateFrameworkEvents.emit("UPDATE_EWS"); update ews and next obs due moved to news guidelines component
                   },
                   (err_score) => {
                     this.subjects.showMessage.next({ result: "failed", message: "Could not calculate score: " + err_score.message })
 
                   },
-                  () => { this.subjects.drawGraph.next(); }));
+                  () => { this.subjects.drawGraph.next(true); }));
 
               }, (err_obs) => {
                 //error creating obs, show message, delete created obsevent. 
@@ -1136,26 +1136,26 @@ export class NewObservationComponent implements OnInit, OnDestroy {
       }
       else {
 
-        for (const field in (<FormGroup>this.obsForm.get('genObs.newsMandatory')).controls) {
+        for (const field in (<UntypedFormGroup>this.obsForm.get('genObs.newsMandatory')).controls) {
           const control = this.obsForm.get('genObs.newsMandatory.' + field);
           if (control) {
             control.markAsTouched({ onlySelf: true });
           }
         }
-        for (const field in (<FormGroup>this.obsForm.get('genObs.oxyGrp')).controls) {
+        for (const field in (<UntypedFormGroup>this.obsForm.get('genObs.oxyGrp')).controls) {
           const control = this.obsForm.get('genObs.oxyGrp.' + field);
           if (control) {
             control.markAsTouched({ onlySelf: true });
           }
         }
-        for (const field in (<FormGroup>this.obsForm.get('otherObs')).controls) {
+        for (const field in (<UntypedFormGroup>this.obsForm.get('otherObs')).controls) {
           const control = this.obsForm.get('otherObs.' + field);
           if (control) {
             control.markAsTouched({ onlySelf: true });
           }
         }
 
-        for (const field in (<FormGroup>this.obsForm.get('pewsOnlyObs')).controls) {
+        for (const field in (<UntypedFormGroup>this.obsForm.get('pewsOnlyObs')).controls) {
           const control = this.obsForm.get('pewsOnlyObs.' + field);
           if (control) {
             control.markAsTouched({ onlySelf: true });
@@ -1186,7 +1186,7 @@ export class NewObservationComponent implements OnInit, OnDestroy {
     }
   }
 
-  public noWhitespaceValidator(control: FormControl) {
+  public noWhitespaceValidator(control: UntypedFormControl) {
     const isWhitespace = (control.value || '').trim().length === 0;
     const isValid = !isWhitespace;
     return isValid ? null : { 'whitespace': true };
@@ -1224,7 +1224,7 @@ export class NewObservationComponent implements OnInit, OnDestroy {
     };
   }
 
-  public isUnansweredValidator(control: FormControl) {
+  public isUnansweredValidator(control: UntypedFormControl) {
     const isUnanswered = control.value == null || (control.value || '').trim() === "null"
     return !isUnanswered ? null : { 'unanswered': true };
   }

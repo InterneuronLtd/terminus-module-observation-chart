@@ -33,7 +33,7 @@ You should have received a copy of the GNU General Public License
 along with this program.If not, see<http://www.gnu.org/licenses/>.  -->
 
 <div>
-  <button type="button" class="btn btn-dark text-white" data-toggle="modal" data-target="#personscaleModal">
+  <button type="button" class="btn btn-dark text-white" data-bs-toggle="modal" data-bs-target="#personscaleModal">
     Change Scale Type
   </button>
 
@@ -45,7 +45,7 @@ along with this program.If not, see<http://www.gnu.org/licenses/>.  -->
       <!-- Modal Header -->
       <div class="modal-header">
         <h5 class="modal-title">Change Scale Type</h5>
-        <button type="button" class="close" data-dismiss="modal">&times;</button>
+        <button type="button" class="close" data-bs-dismiss="modal">&times;</button>
       </div>
 
       <!-- Modal body -->
@@ -53,7 +53,7 @@ along with this program.If not, see<http://www.gnu.org/licenses/>.  -->
         <div class="dropdown form-group" style="padding-bottom:0px;" >
           <label class="col-sm-3 col-form-label text-right">Select scale</label>
           <button type="button" id="selectedscaletype" style="text-align: center;" class="btn btn-dark dropdown-toggle"
-                  data-toggle="dropdown">
+                  data-bs-toggle="dropdown">
             {{displayScaleType}}
           </button>
           <div class="dropdown-menu" (change)="onChange($event)">
@@ -73,7 +73,7 @@ along with this program.If not, see<http://www.gnu.org/licenses/>.  -->
       <!-- Modal footer -->
       <div class="modal-footer" style="padding-top:5px;padding-bottom:5px;">
         <button type="button" (click)="updateScaletype()" style="float: right;"
-                class="btn btn-primary" data-dismiss="modal">
+                class="btn btn-primary" data-bs-dismiss="modal">
           Save
         </button>
       </div>

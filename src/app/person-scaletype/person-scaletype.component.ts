@@ -109,7 +109,7 @@ export class PersonScaletypeComponent implements OnInit, OnDestroy {
       .subscribe(() => {
         this.appservice.personscale = this.personobservationscale;
         this.appservice.setCurrentScale();
-        this.subjects.drawGraph.next();
+        this.subjects.drawGraph.next(true);
         this.subjects.showMessage.next({ result: "complete", message: "Scale updated.", timeout: 10000 });
 
       });

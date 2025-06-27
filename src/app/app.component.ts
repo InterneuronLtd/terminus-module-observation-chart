@@ -63,7 +63,7 @@ export class AppComponent implements OnDestroy {
   encountersListLoaded(value: boolean) {
     this.hasEncounters = value;
     this.showNoEncounterMsg = !value;
-    this.subjects.initialzeFormMetaData.next();
+    this.subjects.initialzeFormMetaData.next(true);
   }
   confirmModalRef: BsModalRef;
 
@@ -95,9 +95,9 @@ export class AppComponent implements OnDestroy {
       this.appService.logToConsole("Service reference is being set");
       this.appService.apiService = value;
       this.appService.logToConsole("Service reference is being published");
-      this.subjects.apiServiceReferenceChange.next();
+      this.subjects.apiServiceReferenceChange.next(true);
       this.appService.logToConsole("personid is being published");
-      this.subjects.personIdChange.next();
+      this.subjects.personIdChange.next(true);
     }
   }
   @Input() set unload(value: Subject<any>) {
@@ -247,9 +247,9 @@ export class AppComponent implements OnDestroy {
 
                 //emit events after getting initial config. //this happens on first load only. 
                 this.appService.logToConsole("Service reference is being published from init config");
-                this.subjects.apiServiceReferenceChange.next();
+                this.subjects.apiServiceReferenceChange.next(true);
                 this.appService.logToConsole("personid is being published from init config");
-                this.subjects.personIdChange.next();
+                this.subjects.personIdChange.next(true);
 
               }));
 
@@ -351,7 +351,7 @@ export class AppComponent implements OnDestroy {
 
   public openObsModal() {
     this.observationsFormHeader = "Add Observations";
-    this.subjects.newObs.next();
+    this.subjects.newObs.next(true);
     //this.removeXaxisCss();
     this.appService.logToConsole(this.appService.personId);
 
@@ -470,7 +470,7 @@ export class AppComponent implements OnDestroy {
 
   encounterLoadComplete() {
     //commment out to push to framework - 3lines
-    // this.appService.personId = "4cede3ee-47d9-4a16-ad64-64c3e86083a0";// "17775da9-8e71-4a3f-9042-4cdcbf97efec";// "429904ca-19c1-4a3a-b453-617c7db513a3";//"027c3400-24cd-45c1-9e3d-0f4475336394";//"429904ca-19c1-4a3a-b453-617c7db513a3";
+    // this.appService.personId = "f9aa3dad-6b9b-4e1a-bb5c-2ac1e03c7b80";// "17775da9-8e71-4a3f-9042-4cdcbf97efec";// "429904ca-19c1-4a3a-b453-617c7db513a3";//"027c3400-24cd-45c1-9e3d-0f4475336394";//"429904ca-19c1-4a3a-b453-617c7db513a3";
 
     // let value: any = {};
     // value.authService = {};

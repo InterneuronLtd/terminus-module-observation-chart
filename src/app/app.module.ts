@@ -38,7 +38,7 @@ import { ReactiveFormsModule } from '@angular/forms';
 
 import { AppComponent } from './app.component';
 import { EncounterNavigationComponent } from './encounter-navigation/encounter-navigation.component';
-import { HttpClientModule } from '@angular/common/http';
+import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 import { NewObservationComponent } from './new-observation/new-observation.component';
 import { ObservationChartComponent } from './observation-chart/observation-chart.component';
 import { BsDatepickerModule } from 'ngx-bootstrap/datepicker';
@@ -60,39 +60,32 @@ import { ModuleLoaderDirective } from './directives/module-loader.directive';
 import { ToastrModule } from 'ngx-toastr';
 
 
-@NgModule({
-  declarations: [
-    AppComponent,
-    EncounterNavigationComponent,
-    NewObservationComponent,
-    ObservationChartComponent,
-    InformationPopupComponent,
-    PersonScaletypeComponent,
-    DeleteObservationeventComponent,
-    InputKeyPressDirective,
-    NewsGuidlinesComponent,
-    NumberOnlyDirective,
-    NonNegativeNumbersDirective,
-    ModuleLoaderDirective
-
-  ],
-  imports: [
-    BrowserModule, HttpClientModule,
-    ReactiveFormsModule,
-    BsDatepickerModule.forRoot(),
-    BrowserAnimationsModule,
-    TimepickerModule.forRoot(),
-    ModalModule.forRoot(),
-    AlertModule.forRoot(),
-    ToastrModule.forRoot({
-      timeOut: 10000,
-      preventDuplicates: true,
-    })
-  ],
-  providers: [DatePipe],
-  bootstrap: [],
-  entryComponents: [AppComponent]
-})
+@NgModule({ declarations: [
+        AppComponent,
+        EncounterNavigationComponent,
+        NewObservationComponent,
+        ObservationChartComponent,
+        InformationPopupComponent,
+        PersonScaletypeComponent,
+        DeleteObservationeventComponent,
+        InputKeyPressDirective,
+        NewsGuidlinesComponent,
+        NumberOnlyDirective,
+        NonNegativeNumbersDirective,
+        ModuleLoaderDirective
+    ],
+    bootstrap: [],
+     imports: [BrowserModule,
+        ReactiveFormsModule,
+        BsDatepickerModule.forRoot(),
+        BrowserAnimationsModule,
+        TimepickerModule.forRoot(),
+        ModalModule.forRoot(),
+        AlertModule.forRoot(),
+        ToastrModule.forRoot({
+            timeOut: 10000,
+            preventDuplicates: true,
+        })], providers: [DatePipe, provideHttpClient(withInterceptorsFromDi())] })
 export class AppModule {
   constructor(private injector: Injector) {
   }

@@ -290,6 +290,36 @@ export class DeleteObservationeventComponent implements OnInit, OnDestroy {
                   this.oldObservations.push(recordedBy);
                 }
 
+                this.apiRequest.getRequest(`${this.appService.baseURI}/GetListByAttribute?synapsenamespace=core&synapseentityname=observationeventmonitoring&synapseattributename=observationevent_id&returnsystemattributes=1&attributevalue=${observationevent_id}`)
+                  .subscribe
+                  ((observationeventmonitoring) => {
+                    let observationEventMonitoring = JSON.parse(observationeventmonitoring);
+                    if (Array.isArray(observationEventMonitoring) && observationEventMonitoring.length != 0) {
+                      let monitoringFrequency: any = {};
+
+                      // if (this.appService.appConfig.environment == 'hospital') {
+                      //   if (observationEventMonitoring[0].ispause)
+                      //     monitoringFrequency.value = "Paused";
+                      //   else if (observationEventMonitoring[0].isstop)
+                      //       monitoringFrequency.value = "Stopped";
+                      //   else if (observationEventMonitoring[0].monitoringnotrequired)
+                      //     monitoringFrequency.value = "Regular Monitoring not required";
+                      //   else {
+                      //       monitoringFrequency.value = observationEventMonitoring[0].frequency_entered;
+                      //       monitoringFrequency.displayUnits = observationEventMonitoring[0].frequencyunit_entered;
+                      //     }
+                      // }
+                      // else {
+                        monitoringFrequency.value = (observationEventMonitoring[0].observationfrequency == '168' ? 'Monitoring not clinically indicated' :observationEventMonitoring[0].observationfrequency);
+                        monitoringFrequency.displayUnits = (observationEventMonitoring[0].observationfrequency == '168' ? '' : "Hrs");
+                      // }
+                      monitoringFrequency.displayName = "Monitoring Frequency";
+                      monitoringFrequency.sortOrder = 107;
+                      this.oldObservations.push(monitoringFrequency);
+
+                    }
+                  });
+
                 //Smoke Test	23	Current Reqmt	The observation event should be displayed in the same order as the observation entry form, which is the same as the chart.	The observation event pop-over is displayed when tapping the obs date at the top of the chart. Currently displayed in alphabetical order.		P1	Update Observation Event Summary ordering
 
                 this.oldObservations.sort(function compare(a, b) {
@@ -331,7 +361,7 @@ export class DeleteObservationeventComponent implements OnInit, OnDestroy {
               .subscribe(
                 () => {
                   this.subjects.showMessage.next({ result: "complete", message: "Observations removed.", timeout: 10000 });
-                  this.subjects.drawGraph.next();
+                  this.subjects.drawGraph.next(true);
                 }, (error) => {
                   this.subjects.showMessage.next({ result: "failed", message: "Could not remove observations " + error })
                 });

@@ -36,7 +36,7 @@ import { Injectable, OnInit, OnDestroy } from '@angular/core';
 import { Encounter } from '../models/encounter.model';
 import { PersonObservationScale, Observationtype, Observationevent, Observationscaletype } from '../models/observations.model';
 import { Subscription } from 'rxjs';
-import * as jwt_decode from "jwt-decode";
+import { jwtDecode } from 'jwt-decode';
 import { action } from '../models/Filter.model';
 import { configmodel } from '../models/config.model';
 import * as moment from 'moment';
@@ -101,7 +101,7 @@ export class AppService {
   }
   decodeAccessToken(token: string): any {
     try {
-      return jwt_decode(token);
+      return jwtDecode(token);
     }
     catch (Error) {
       return null;

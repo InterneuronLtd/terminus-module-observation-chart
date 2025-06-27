@@ -34,8 +34,7 @@ along with this program.If not, see<http://www.gnu.org/licenses/>. */
 import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { SubjectsService } from '../services/subjects.service';
-import { ViewEncapsulation } from '@angular/compiler/src/core';
-import { FormBuilder, Validators, FormControl } from '@angular/forms';
+import { UntypedFormBuilder, Validators, UntypedFormControl } from '@angular/forms';
 import { ApirequestService } from '../services/apirequest.service';
 import { AppService } from '../services/app.service';
 import { ObservationEventMonitoring, Observation, Observationevent } from '../models/observations.model';
@@ -84,7 +83,7 @@ export class NewsGuidlinesComponent implements OnInit {
   @ViewChild('firstElement')
   private firstElement: ElementRef;
 
-  constructor(private fb: FormBuilder, private apiRequest: ApirequestService, private subjects: SubjectsService, private appService: AppService) {
+  constructor(private fb: UntypedFormBuilder, private apiRequest: ApirequestService, private subjects: SubjectsService, private appService: AppService) {
 
     this.subscriptions.add(this.obsmonitoringform.get('isPatientSick').valueChanges.subscribe(value => {
       if (value == "true") {
@@ -350,7 +349,7 @@ export class NewsGuidlinesComponent implements OnInit {
           this.appService.logToConsole("error creating observations event");
           this.appService.logToConsole(err_obsevent);
           this.subjects.showMessage.next({ result: "failed", message: "There was an error adding observations monitoring: " + err_obsevent });
-        }, () => { this.subjects.drawGraph.next(); }));
+        }, () => { this.subjects.drawGraph.next(true); }));
     }
     else {
       this.obsmonitoringform.get('monitoringFrequency').markAsTouched({ onlySelf: true });
@@ -483,7 +482,7 @@ export class NewsGuidlinesComponent implements OnInit {
     }
 
   }
-  public isUnansweredValidator(control: FormControl) {
+  public isUnansweredValidator(control: UntypedFormControl) {
     const isUnanswered = control.value == null || (control.value || '').trim() === "null"
     return !isUnanswered ? null : { 'unanswered': true };
   }

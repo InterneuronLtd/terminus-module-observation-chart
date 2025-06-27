@@ -36,7 +36,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders, HttpErrorResponse } from '@angular/common/http';
 import { AuthenticationService } from './authentication.service';
 import { AppService } from './app.service';
-import { Observable, from } from 'rxjs';
+import { Observable, firstValueFrom, from } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -48,7 +48,7 @@ export class ApirequestService {
 
   public getRequest(uri: string): Observable<any> {
     //comment out before push to framework
-    //return from(this.authService.getToken().then((token) => { return this.callApiGet(token, uri); }));
+  //  return from(this.authService.getToken().then((token) => { return this.callApiGet(token, uri); }));
 
     return from(this.appService.apiService.getRequest(uri));
 
@@ -56,7 +56,7 @@ export class ApirequestService {
 
   public postRequest(uri: string, body: any): Observable<any> {
     //comment out before push to framework
-     //return from(this.authService.getToken().then((token) => { return this.callApiPost(token, uri, body); }));
+   //  return from(this.authService.getToken().then((token) => { return this.callApiPost(token, uri, body); }));
 
     return from(this.appService.apiService.postRequest(uri, body));
 
@@ -64,7 +64,7 @@ export class ApirequestService {
 
   public deleteRequest(uri: string): Observable<any> {
     //comment out before push to framework
-    //return from(this.authService.getToken().then((token) => { return this.callApiDelete(token, uri) }));
+   // return from(this.authService.getToken().then((token) => { return this.callApiDelete(token, uri) }));
 
     return from(this.appService.apiService.deleteRequest(uri));
 
@@ -77,8 +77,8 @@ export class ApirequestService {
       'Authorization': 'Bearer ' + token
     });
 
-    return this.httpClient.get(uri, { headers: headers })
-      .toPromise()
+    return firstValueFrom(this.httpClient.get(uri, { headers: headers }))
+     
       .catch((result: HttpErrorResponse) => {
         if (result.status === 401) {
 
@@ -94,8 +94,8 @@ export class ApirequestService {
       'Authorization': 'Bearer ' + token
     });
 
-    return this.httpClient.post(uri, body, { headers: headers })
-      .toPromise()
+    return firstValueFrom(this.httpClient.post(uri, body, { headers: headers }))
+    
       .catch((result: HttpErrorResponse) => {
         console.log(result
         );
@@ -112,8 +112,8 @@ export class ApirequestService {
       'Authorization': 'Bearer ' + token
     });
 
-    return this.httpClient.delete(uri, { headers: headers })
-      .toPromise()
+    return firstValueFrom(this.httpClient.delete(uri, { headers: headers }))
+     
       .catch((result: HttpErrorResponse) => {
         if (result.status === 401) {
 

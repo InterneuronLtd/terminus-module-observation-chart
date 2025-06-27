@@ -144,7 +144,7 @@ export class EncounterNavigationComponent implements OnInit, OnDestroy {
     this.subjects.encounterChange.next(encounter);
     if (this.appservice.isInitComplete) {
       this.appservice.setCurrentScale();
-      this.subjects.drawGraph.next();
+      this.subjects.drawGraph.next(true);
     }
   }
   encounterClicked() {
